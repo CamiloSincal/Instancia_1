@@ -1,7 +1,18 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+import socket
 
-hostname = 'localhost'
+
+def get_public_ip():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        sock.connect(("8.8.8.8", 80))
+        ip_address = sock.getsockname()[0]
+    finally:
+        sock.close()
+    return ip_address
+
+hostname = get_public_ip()
 puerto_server = 8000
 
 class MyServer(BaseHTTPRequestHandler):
